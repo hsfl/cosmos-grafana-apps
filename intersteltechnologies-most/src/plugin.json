@@ -1,0 +1,68 @@
+{
+  "$schema": "https://raw.githubusercontent.com/grafana/grafana/master/docs/sources/developers/plugins/plugin.schema.json",
+  "type": "app",
+  "name": "MOST",
+  "id": "intersteltechnologies-most-app",
+  "info": {
+    "keywords": [
+      "app"
+    ],
+    "description": "Mission operations and support tool monitors and commands a single node",
+    "author": {
+      "name": "Interstel technologies"
+    },
+    "logos": {
+      "small": "img/logo.svg",
+      "large": "img/logo.svg"
+    },
+    "screenshots": [],
+    "version": "%VERSION%",
+    "updated": "%TODAY%"
+  },
+  "includes": [
+    {
+      "type": "page",
+      "name": "Home",
+      "path": "/a/%PLUGIN_ID%/home",
+      "role": "Admin",
+      "addToNav": true,
+      "defaultNav": true
+    },
+    {
+      "type": "page",
+      "name": "Page with tabs",
+      "path": "/a/%PLUGIN_ID%/page-with-tabs",
+      "role": "Admin",
+      "addToNav": true,
+      "defaultNav": false
+    },
+    {
+      "type": "page",
+      "name": "Page with drilldown",
+      "path": "/a/%PLUGIN_ID%/page-with-drilldown",
+      "role": "Admin",
+      "addToNav": true,
+      "defaultNav": false
+    },
+    {
+      "type": "page",
+      "name": "Hello world",
+      "path": "/a/%PLUGIN_ID%/hello-world",
+      "role": "Admin",
+      "addToNav": true,
+      "defaultNav": false
+    },
+    {
+      "type": "page",
+      "name": "Flight Director's Display",
+      "path": "/a/%PLUGIN_ID%/flight-directors-display",
+      "role": "Admin",
+      "addToNav": true,
+      "defaultNav": false
+    }
+  ],
+  "dependencies": {
+    "grafanaDependency": ">=9.5.3",
+    "plugins": []
+  }
+}
