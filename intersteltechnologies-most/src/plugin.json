@@ -59,6 +59,86 @@
       "role": "Admin",
       "addToNav": true,
       "defaultNav": false
+    },
+    {
+      "type": "page",
+      "name": "ADCS Subsystem",
+      "path": "/a/%PLUGIN_ID%/adcs",
+      "role": "Admin",
+      "addToNav": true,
+      "defaultNav": false
+    },
+    {
+      "type": "page",
+      "name": "Flight Dynamics Subsystem",
+      "path": "/a/%PLUGIN_ID%/flight-dynamics",
+      "role": "Admin",
+      "addToNav": true,
+      "defaultNav": false
+    },
+    {
+      "type": "page",
+      "name": "GS Subsystem",
+      "path": "/a/%PLUGIN_ID%/gs",
+      "role": "Admin",
+      "addToNav": true,
+      "defaultNav": false
+    },
+    {
+      "type": "page",
+      "name": "FSW Subsystem",
+      "path": "/a/%PLUGIN_ID%/fsw",
+      "role": "Admin",
+      "addToNav": true,
+      "defaultNav": false
+    },
+    {
+      "type": "page",
+      "name": "Payloads Subsystem",
+      "path": "/a/%PLUGIN_ID%/payloads",
+      "role": "Admin",
+      "addToNav": true,
+      "defaultNav": false
+    },
+    {
+      "type": "page",
+      "name": "TCS Subsystem",
+      "path": "/a/%PLUGIN_ID%/tcs",
+      "role": "Admin",
+      "addToNav": true,
+      "defaultNav": false
+    },
+    {
+      "type": "page",
+      "name": "Telecom Subsystem",
+      "path": "/a/%PLUGIN_ID%/telecom",
+      "role": "Admin",
+      "addToNav": true,
+      "defaultNav": false
+    },
+    {
+      "type": "page",
+      "name": "EPS Subsystem",
+      "path": "/a/%PLUGIN_ID%/eps",
+      "role": "Admin",
+      "addToNav": true,
+      "defaultNav": false
+    },
+    {
+      "type": "page",
+      "name": "Propulsion Subsystem",
+      "path": "/a/%PLUGIN_ID%/propulsion",
+      "role": "Admin",
+      "addToNav": true,
+      "defaultNav": false
+    },
+    {
+      "type": "page",
+      "name": "OBCS Subsystem",
+      "path": "/a/%PLUGIN_ID%/obcs",
+      "role": "Admin",
+      "addToNav": true,
+      "defaultNav": false
     }
   ],
   "dependencies": {

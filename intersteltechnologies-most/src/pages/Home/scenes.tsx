@@ -12,7 +12,7 @@ import {
   VariableValueSelectors,
   VizPanel,
 } from '@grafana/scenes';
-import { DATASOURCE_REF } from '../../constants';
+import { TEST_DATASOURCE_REF } from '../../constants';
 import { CustomSceneObject } from './CustomSceneObject';
 
 export function getBasicScene(templatised = true, seriesToShow = '__server_names') {
@@ -31,11 +31,11 @@ export function getBasicScene(templatised = true, seriesToShow = '__server_names
 
   // Query runner definition, using Grafana built-in TestData datasource
   const queryRunner = new SceneQueryRunner({
-    datasource: DATASOURCE_REF,
+    datasource: TEST_DATASOURCE_REF,
     queries: [
       {
         refId: 'A',
-        datasource: DATASOURCE_REF,
+        datasource: TEST_DATASOURCE_REF,
         scenarioId: 'random_walk',
         seriesCount: 5,
         // Query is using variable value

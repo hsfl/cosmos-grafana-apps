@@ -151,11 +151,14 @@ export function getRoomsTemperatureStats() {
               links: [
                 {
                   title: 'Go to room temperature overview',
-                  url: '${__url.path}/room/${__field.name}/temperature${__url.params}',
+                  // url: '${__url.path}/room/${__field.name}/temperature${__url.params}', // TODO broken link see other page
+                  url: prefixRoute(`${ROUTES.WithDrilldown}`) + '/room/${__field.name}/temperature',
                 },
                 {
                   title: 'Go to room humidity overview',
-                  url: '${__url.path}/room/${__field.name}/humidity${__url.params}',
+                  // url: '${__url.path}/room/${__field.name}/humidity${__url.params}',
+                  url: prefixRoute(`${ROUTES.WithDrilldown}`) + '/room/${__field.name}/humidity${__url.params}',
+
                 },
               ],
             },
