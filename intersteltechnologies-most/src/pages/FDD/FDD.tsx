@@ -1,7 +1,7 @@
-import React, { useMemo } from 'react';
+import React, {useMemo} from 'react';
 // import { getScene } from './fddScene';
-import { prefixRoute } from '../../utils/utils.routing';
-import { DATASOURCE_REF, DASH_DATASOURCE_REF, ROUTES } from '../../constants';
+import {prefixRoute} from '../../utils/utils.routing';
+import {DATASOURCE_REF, ROUTES} from '../../constants';
 // DASH_DATASOURCE_REF
 import {
   EmbeddedScene,
@@ -21,12 +21,18 @@ import {
   CustomVariable,
   VariableValueSelectors
 } from '@grafana/scenes';
+import {getGSScene} from '../Subsystems/GS/scenes';
+import {getADCSScene} from '../Subsystems/ADCS/adcsScene';
+import {NodeSceneObject} from './NodeSceneObject';
+// import {SimplePanel} from '../../../../../cosmos-grafana-plugins/src/cosmos-timeline';
 
 // const scene = () => getScene();
 // const scene = getScene;
 
-const NODE = 'mother';
+const NODE = 'mother'; //'${nodeToShow}'; // 'mother';
 const row_return = 1000;
+const draggable = true;
+const resizeable = true;
 
 // Variable definition, using Grafana built-in TestData datasource
 const customVariable = new CustomVariable({
@@ -34,14 +40,238 @@ const customVariable = new CustomVariable({
   label: 'Node to show',
   value: 'mother',
   query: 'Mother Node : mother, Child 01 : child_01',
+  // query: 'Mother Node : mother, Child 01 : child_01',
 });
 
 let timeRange = new SceneTimeRange({
   from: "2023-06-12T00:00:00.000Z",
   to: "2023-06-12T02:00:00.000Z"
-  // from: 'now-12h',
+  // from: 'now-1h',
   // to: 'now',
 });
+
+// Custom object definition
+const customObject = new NodeSceneObject({
+  node: 'mother',
+});
+
+// TODO note inefficiency where state change triggers all queries on every keystroke;
+// TODO update node selection object to be a list of nodes, returned from db query
+// TODO need better way to pass the node state to supsystem scene, object does not transfer value
+// TODO need to write queryRunner function for each panel to add activation handler for dynamic node
+
+//TODO can group panels within app scene? 
+// TODO pass node as url string variable 
+// TODO update node list dynamically by query
+
+// ADCS query
+// Query runner definition
+const queryRunnerADCS = new SceneQueryRunner({
+  datasource: DATASOURCE_REF,
+  queries: [
+    // getDashQuery()
+    // getPositionOrbitQuery(NODE),
+    getPositionICRFQuery(NODE), getPositionGEOCQuery(NODE), getPositionLVLHQuery(NODE),
+  ],
+  maxDataPoints: row_return,
+});
+
+// Query runner activation handler that will update query runner state when custom object state changes
+queryRunnerADCS.addActivationHandler(() => {
+  const sub = customObject.subscribeToState((newState) => {
+    queryRunnerADCS.setState({
+      queries: [
+        getPositionICRFQuery(newState.node),
+        getPositionGEOCQuery(newState.node),
+        getPositionLVLHQuery(newState.node),
+        // getPositionLVLHQuery(customVariable.getValueText()),
+        // getPositionOrbitQuery(newState.node),
+        // {
+        //   // ...queryRunner.state.queries[0],
+        //   ...queryRunner.state.queries[0],
+        //   // NODE: newState.node,
+        //   filters: [
+        //     {
+        //       compareType: 'equals',
+        //       filterType: 'node',
+        //       filterValue: newState.node // need dynamic variable passed from node select
+        //     }
+        //   ],
+        // },
+      ],
+    });
+    queryRunnerADCS.runQueries();
+  });
+
+  return () => {
+    sub.unsubscribe();
+  };
+});
+
+// Orbit Query
+// Query runner definition
+const queryRunnerOrbit = new SceneQueryRunner({
+  datasource: DATASOURCE_REF,
+  queries: [
+    getPositionOrbitQuery(NODE),
+  ],
+  maxDataPoints: row_return,
+});
+// Query runner activation handler that will update query runner state when custom object state changes
+queryRunnerOrbit.addActivationHandler(() => {
+  const sub = customObject.subscribeToState((newState) => {
+    queryRunnerOrbit.setState({
+      queries: [
+        getPositionOrbitQuery(newState.node),
+      ],
+    });
+    queryRunnerOrbit.runQueries();
+  });
+
+  return () => {
+    sub.unsubscribe();
+  };
+});
+
+// MED Query
+// Query runner definition
+const queryRunnerMED = new SceneQueryRunner({
+  datasource: DATASOURCE_REF,
+  queries: [
+    getEventQuery(NODE),
+  ],
+  maxDataPoints: row_return,
+});
+// Query runner activation handler that will update query runner state when custom object state changes
+queryRunnerMED.addActivationHandler(() => {
+  const sub = customObject.subscribeToState((newState) => {
+    queryRunnerMED.setState({
+      queries: [
+        getEventQuery(newState.node),
+      ],
+    });
+    queryRunnerMED.runQueries();
+  });
+
+  return () => {
+    sub.unsubscribe();
+  };
+});
+
+// EPS Query
+// Query runner definition
+const queryRunnerEPS = new SceneQueryRunner({
+  datasource: DATASOURCE_REF,
+  queries: [
+    getBatteryQuery(NODE),
+    getBCregQuery(NODE)
+  ],
+  maxDataPoints: row_return,
+});
+// Query runner activation handler that will update query runner state when custom object state changes
+queryRunnerEPS.addActivationHandler(() => {
+  const sub = customObject.subscribeToState((newState) => {
+    queryRunnerEPS.setState({
+      queries: [
+        getBatteryQuery(newState.node),
+        getBCregQuery(newState.node),
+      ],
+    });
+    queryRunnerEPS.runQueries();
+  });
+
+  return () => {
+    sub.unsubscribe();
+  };
+});
+
+// OBCS Query
+// Query runner definition
+const queryRunnerOBCS = new SceneQueryRunner({
+  datasource: DATASOURCE_REF,
+  queries: [
+    getCPUQuery(NODE),
+  ],
+  maxDataPoints: row_return,
+});
+// Query runner activation handler that will update query runner state when custom object state changes
+queryRunnerOBCS.addActivationHandler(() => {
+  const sub = customObject.subscribeToState((newState) => {
+    queryRunnerOBCS.setState({
+      queries: [
+        getCPUQuery(newState.node),
+      ],
+    });
+    queryRunnerOBCS.runQueries();
+  });
+
+  return () => {
+    sub.unsubscribe();
+  };
+});
+
+// TCS Query
+// Query runner definition
+const queryRunnerTCS = new SceneQueryRunner({
+  datasource: DATASOURCE_REF,
+  queries: [
+    getTSENQuery(NODE),
+  ],
+  maxDataPoints: row_return,
+});
+// Query runner activation handler that will update query runner state when custom object state changes
+queryRunnerTCS.addActivationHandler(() => {
+  const sub = customObject.subscribeToState((newState) => {
+    queryRunnerTCS.setState({
+      queries: [
+        getTSENQuery(newState.node),
+      ],
+    });
+    queryRunnerTCS.runQueries();
+  });
+
+  return () => {
+    sub.unsubscribe();
+  };
+});
+
+// Nodal Awareness Query
+// Query runner definition
+const queryRunnerNodalAware = new SceneQueryRunner({
+  datasource: DATASOURCE_REF,
+  queries: [
+    getNodeAwareQuery(NODE),
+  ],
+  maxDataPoints: row_return,
+});
+// Query runner activation handler that will update query runner state when custom object state changes
+queryRunnerNodalAware.addActivationHandler(() => {
+  const sub = customObject.subscribeToState((newState) => {
+    queryRunnerNodalAware.setState({
+      queries: [
+        getNodeAwareQuery(newState.node),
+      ],
+    });
+    queryRunnerNodalAware.runQueries();
+  });
+
+  return () => {
+    sub.unsubscribe();
+  };
+});
+
+// reference GS subsystem app scene page
+const getTab1Scene = () => {
+  return getGSScene(false, customObject.state.node);
+};
+
+// getADCSScene
+// reference ADCS subsystem app scene page
+const getAdcsTabScene = () => {
+  return getADCSScene();
+};
+// const timelineObject = new SimplePanel({
+// });
 
 const getScene = () =>
   new EmbeddedScene({
@@ -52,20 +282,20 @@ const getScene = () =>
     //   // to: 'now',
     // }),
     $timeRange: timeRange,
-    $variables: new SceneVariableSet({ variables: true ? [customVariable] : [] }),
-    // $data: queryRunner,
-    $data: new SceneQueryRunner({
-      datasource: DASH_DATASOURCE_REF,
-      queries: [getDashQuery()],
-      // maxDataPoints: row_return,
-    }),
+    $variables: new SceneVariableSet({variables: true ? [customVariable] : []}),
+    $data: queryRunnerADCS,
+    // $data: new SceneQueryRunner({
+    //   datasource: DASH_DATASOURCE_REF,
+    //   queries: [getDashQuery()],
+    //   // maxDataPoints: row_return,
+    // }),
     // $data: new SceneQueryRunner({
     //   datasource: DATASOURCE_REF,
     //   queries: [getPositionICRFQuery('mother'), getPositionGEOCQuery('mother'), getPositionLVLHQuery('mother'), getPositionOrbitQuery('mother')],
     //   maxDataPoints: 100,
     // }),
     body: new SceneGridLayout({
-      isDraggable: false,
+      isDraggable: draggable,
       isLazy: true,
       children: [
         new SceneGridItem({
@@ -75,17 +305,22 @@ const getScene = () =>
           height: 2,
           // $data: new SceneQueryRunner({
           //   datasource: DATASOURCE_REF,
-          //   queries: [getQuery(NODE)],
+          //   queries: [getDashQuery()],
           //   maxDataPoints: row_return,
           // }),
-          isResizable: false,
-          isDraggable: false,
+          $data: new SceneQueryRunner({
+            datasource: DATASOURCE_REF,
+            queries: [getEventQuery(NODE)],
+            maxDataPoints: row_return,
+          }),
+          isResizable: resizeable,
+          isDraggable: draggable,
           body: new VizPanel({
-            title: '',
+            // title: '',
+            title: '${nodeToShow.query.key}',
             pluginId: 'interstel-most-plulgin', // from panel.json 'name' value
             // TODO note typo in plugin ID name
             options: {
-
               // color: "red",
               // seriesCountSize: "sm",
               // showSeriesCount: false,
@@ -107,8 +342,13 @@ const getScene = () =>
           //   queries: [getQuery(NODE)],
           //   maxDataPoints: row_return,
           // }),
-          isResizable: false,
-          isDraggable: false,
+          $data: new SceneQueryRunner({
+            datasource: DATASOURCE_REF,
+            queries: [getEventQuery(NODE)],
+            maxDataPoints: row_return,
+          }),
+          isResizable: resizeable,
+          isDraggable: draggable,
           body: new VizPanel({
             title: '',
             pluginId: 'interstel-cw-panel', // from panel.json 'name' value
@@ -131,13 +371,14 @@ const getScene = () =>
           width: 8,
           height: 15,
           // $timeRange: timeRange,
-          $data: new SceneQueryRunner({
-            datasource: DATASOURCE_REF,
-            queries: [getEventQuery(NODE)],
-            maxDataPoints: row_return,
-          }),
-          isResizable: false,
-          isDraggable: false,
+          $data: queryRunnerMED,
+          // $data: new SceneQueryRunner({
+          //   datasource: DATASOURCE_REF,
+          //   queries: [getEventQuery(NODE)],
+          //   maxDataPoints: row_return,
+          // }),
+          isResizable: resizeable,
+          isDraggable: draggable,
           body: new VizPanel({
             title: 'MED',
             pluginId: 'interstel-mission-events-display', // from panel.json 'name' value
@@ -162,13 +403,14 @@ const getScene = () =>
           width: 7,
           height: 15,
           $timeRange: timeRange,
-          $data: new SceneQueryRunner({
-            datasource: DATASOURCE_REF,
-            queries: [getPositionOrbitQuery(NODE)],
-            maxDataPoints: row_return,
-          }),
-          isResizable: true,
-          isDraggable: false,
+          $data: queryRunnerOrbit,
+          // $data: new SceneQueryRunner({
+          //   datasource: DATASOURCE_REF,
+          //   queries: [getPositionOrbitQuery(NODE)],
+          //   maxDataPoints: row_return,
+          // }),
+          isResizable: resizeable,
+          isDraggable: draggable,
           body: new VizPanel({
             title: 'Orbit',
             pluginId: 'hsfl-orbit-display', // from panel.json 'name' value
@@ -191,17 +433,19 @@ const getScene = () =>
           y: 3,
           width: 5,
           height: 11,
-          $data: new SceneQueryRunner({
-            datasource: DATASOURCE_REF,
-            queries: [getPositionICRFQuery(NODE), getPositionGEOCQuery(NODE), getPositionLVLHQuery(NODE)],
-            maxDataPoints: row_return,
-          }),
-          isResizable: false,
-          isDraggable: false,
+          $data: queryRunnerADCS,
+          // $data: new SceneQueryRunner({
+          //   datasource: DATASOURCE_REF,
+          //   queries: [getPositionICRFQuery(NODE), getPositionGEOCQuery(NODE), getPositionLVLHQuery(NODE)],
+          //   maxDataPoints: row_return,
+          // }),
+          isResizable: resizeable,
+          isDraggable: draggable,
           body: new VizPanel({
             title: 'ADCS',
             pluginId: 'interstel-adcs-display', // from panel.json 'name' value
             options: {
+              customVariable: 'subsystem',
               // color: "red",
               // seriesCountSize: "sm",
               // showSeriesCount: false,
@@ -218,13 +462,14 @@ const getScene = () =>
           y: 3,
           width: 4,
           height: 7,
-          $data: new SceneQueryRunner({
-            datasource: DATASOURCE_REF,
-            queries: [getBatteryQuery(NODE), getBCregQuery(NODE)],
-            maxDataPoints: row_return,
-          }),
-          isResizable: false,
-          isDraggable: false,
+          $data: queryRunnerEPS,
+          // $data: new SceneQueryRunner({
+          //   datasource: DATASOURCE_REF,
+          //   queries: [getBatteryQuery(NODE), getBCregQuery(NODE)],
+          //   maxDataPoints: row_return,
+          // }),
+          isResizable: resizeable,
+          isDraggable: draggable,
           body: new VizPanel({
             title: 'EPS',
             pluginId: 'interstel-battery-display', // from panel.json 'name' value
@@ -245,13 +490,14 @@ const getScene = () =>
           y: 10,
           width: 4,
           height: 6,
-          $data: new SceneQueryRunner({
-            datasource: DATASOURCE_REF,
-            queries: [getCPUQuery(NODE)],
-            maxDataPoints: row_return,
-          }),
-          isResizable: false,
-          isDraggable: false,
+          $data: queryRunnerOBCS,
+          // $data: new SceneQueryRunner({
+          //   datasource: DATASOURCE_REF,
+          //   queries: [getCPUQuery(NODE)],
+          //   maxDataPoints: row_return,
+          // }),
+          isResizable: resizeable,
+          isDraggable: draggable,
           body: new VizPanel({
             title: 'OBCS',
             pluginId: 'interstel-obcs-panel', // from panel.json 'name' value
@@ -272,13 +518,14 @@ const getScene = () =>
           width: 5,
           x: 15,
           y: 14,
-          $data: new SceneQueryRunner({
-            datasource: DATASOURCE_REF,
-            queries: [getTSENQuery(NODE)],
-            maxDataPoints: row_return,
-          }),
-          isResizable: false,
-          isDraggable: false,
+          $data: queryRunnerTCS,
+          // $data: new SceneQueryRunner({
+          //   datasource: DATASOURCE_REF,
+          //   queries: [getTSENQuery(NODE)],
+          //   maxDataPoints: row_return,
+          // }),
+          isResizable: resizeable,
+          isDraggable: draggable,
           body: new VizPanel({
             title: 'TCS',
             pluginId: 'interstel-temperature-sensor-display', // from panel.json 'name' value
@@ -304,8 +551,8 @@ const getScene = () =>
           //   queries: [getQuery(NODE)],
           //   maxDataPoints: row_return,
           // }),
-          isResizable: false,
-          isDraggable: false,
+          isResizable: resizeable,
+          isDraggable: draggable,
           body: new VizPanel({
             title: 'Comm',
             pluginId: 'interstel-antenna-panel', // from panel.json 'name' value
@@ -328,12 +575,17 @@ const getScene = () =>
           y: 18,
           // $data: new SceneQueryRunner({
           //   datasource: DASH_DATASOURCE_REF,
+          //   queries: [getEventQuery(NODE)],
+          //   // maxDataPoints: row_return,
+          // }),
+          // $data: new SceneQueryRunner({
+          //   datasource: DASH_DATASOURCE_REF,
           //   queries: [getDashQuery()],
           //   // maxDataPoints: row_return,
           // }),
           // $timeRange: timeRange,
-          isResizable: false,
-          isDraggable: false,
+          isResizable: resizeable,
+          isDraggable: draggable,
           body: new VizPanel({
             title: '',
             pluginId: 'interstel-timeline', // from panel.json 'name' value
@@ -361,8 +613,8 @@ const getScene = () =>
           //   queries: [getQuery(NODE)],
           //   maxDataPoints: row_return,
           // }),
-          isResizable: false,
-          isDraggable: false,
+          isResizable: resizeable,
+          isDraggable: draggable,
           body: new VizPanel({
             title: '',
             pluginId: 'interstel-command-panel', // from panel.json 'name' value
@@ -383,13 +635,14 @@ const getScene = () =>
           width: 7,
           x: 0,
           y: 20,
-          $data: new SceneQueryRunner({
-            datasource: DATASOURCE_REF,
-            queries: [getPositionOrbitQuery(NODE)],
-            maxDataPoints: row_return,
-          }),
-          isResizable: false,
-          isDraggable: false,
+          $data: queryRunnerOrbit,
+          // $data: new SceneQueryRunner({
+          //   datasource: DATASOURCE_REF,
+          //   queries: [getPositionOrbitQuery(NODE)],
+          //   maxDataPoints: row_return,
+          // }),
+          isResizable: resizeable,
+          isDraggable: draggable,
           body: new VizPanel({
             title: '',
             pluginId: 'timeseries', // from panel.json 'name' value
@@ -439,13 +692,14 @@ const getScene = () =>
           width: 13,
           x: 7,
           y: 20,
-          $data: new SceneQueryRunner({
-            datasource: DATASOURCE_REF,
-            queries: [getNodeAwareQuery(NODE)],
-            maxDataPoints: row_return,
-          }),
-          isResizable: false,
-          isDraggable: false,
+          $data: queryRunnerNodalAware,
+          // $data: new SceneQueryRunner({
+          //   datasource: DATASOURCE_REF,
+          //   queries: [getNodeAwareQuery(NODE)],
+          //   maxDataPoints: row_return,
+          // }),
+          isResizable: resizeable,
+          isDraggable: draggable,
           body: new VizPanel({
             title: 'Nodal Situational Awareness',
             pluginId: 'hsfl-nodal-awareness', // from panel.json 'name' value
@@ -471,8 +725,8 @@ const getScene = () =>
           //   queries: [getQuery(NODE)],
           //   maxDataPoints: row_return,
           // }),
-          isResizable: false,
-          isDraggable: false,
+          isResizable: resizeable,
+          isDraggable: draggable,
           body: new VizPanel({
             title: 'GS',
             pluginId: 'text', // from panel.json 'name' value
@@ -494,13 +748,14 @@ const getScene = () =>
           width: 7,
           x: 0,
           y: 25,
-          $data: new SceneQueryRunner({
-            datasource: DATASOURCE_REF,
-            queries: [getPositionICRFQuery(NODE), getPositionGEOCQuery(NODE), getPositionLVLHQuery(NODE)],
-            maxDataPoints: row_return,
-          }),
-          isResizable: false,
-          isDraggable: false,
+          $data: queryRunnerADCS,
+          // $data: new SceneQueryRunner({
+          //   datasource: DATASOURCE_REF,
+          //   queries: [getPositionICRFQuery(NODE), getPositionGEOCQuery(NODE), getPositionLVLHQuery(NODE)],
+          //   maxDataPoints: row_return,
+          // }),
+          isResizable: resizeable,
+          isDraggable: draggable,
           body: new VizPanel({
             title: '',
             pluginId: 'timeseries', // from panel.json 'name' value
@@ -562,7 +817,13 @@ const getScene = () =>
     //     }),
     //   ],
     // }),
-    controls: [new VariableValueSelectors({}), new SceneControlsSpacer(), new SceneTimePicker({ isOnCanvas: true }), new SceneRefreshPicker({})],
+    controls: [
+      new VariableValueSelectors({}),
+      new SceneControlsSpacer(),
+      customObject,
+      new SceneTimePicker({isOnCanvas: true}),
+      new SceneRefreshPicker({})
+    ],
   });
 
 
@@ -626,7 +887,8 @@ function getPositionLVLHQuery(Node: string) {
     ],
     functions: [],
     latestOnly: false,
-    type: 'position'
+    type: 'position',
+    // alias: '${nodeToShow}',
     // scenarioId: 'random_walk',
     // seriesCount: 1,
     // alias: roomName,
@@ -796,29 +1058,29 @@ function getNodeAwareQuery(Node: string) {
   };
 }
 
-function getDashQuery() {
-  return {
-    // arg: NODE,
-    // panelId: 11,
-    refId: 'A',
-    datasource: DASH_DATASOURCE_REF,
-    // filters: [
-    //   {
-    //     compareType: 'equals',
-    //     filterType: 'node',
-    //     filterValue: Node // need dynamic variable passed from node select
-    //   }
-    // ],
-    // functions: [],
-    // latestOnly: false,
-    // type: 'nodalaware'
-    // scenarioId: 'random_walk',
-    // seriesCount: 1,
-    // alias: roomName,
-    // min: 10,
-    // max: 30,
-  };
-}
+// function getDashQuery() {
+//   return {
+//     // arg: NODE,
+//     // panelId: 11,
+//     refId: 'A',
+//     datasource: DASH_DATASOURCE_REF,
+//     // filters: [
+//     //   {
+//     //     compareType: 'equals',
+//     //     filterType: 'node',
+//     //     filterValue: Node // need dynamic variable passed from node select
+//     //   }
+//     // ],
+//     // functions: [],
+//     // latestOnly: false,
+//     // type: 'nodalaware'
+//     // scenarioId: 'random_walk',
+//     // seriesCount: 1,
+//     // alias: roomName,
+//     // min: 10,
+//     // max: 30,
+//   };
+// }
 
 const getFDDAppScenePage = () => {
   return new SceneApp({
@@ -828,40 +1090,62 @@ const getFDDAppScenePage = () => {
         title: "Flight Director's Display",
         subTitle: 'This scene showcases the basic MOST functionality. Interact with CW panel to see details.',
         // controls: [new SceneTimePicker({ isOnCanvas: false })],
-        url: prefixRoute(`${ROUTES.FDD}`),
+        url: prefixRoute(`${ ROUTES.FDD }`),
         hideFromBreadcrumbs: true,
         // scene,
         getScene,
-        drilldowns: [
-          // {
-          //   routePath: prefixRoute(`${ROUTES.WithDrilldown}`) + '/room/:roomName',
-          //   getPage(routeMatch, parent) {
-          //     const roomName = routeMatch.params.roomName;
+        tabs: [
+          new SceneAppPage({
+            title: 'FDD',
+            url: prefixRoute(`${ ROUTES.FDD }`),
+            getScene: getScene,
+          }),
+          new SceneAppPage({
+            title: 'Flight Dynamics',
+            url: prefixRoute(`${ ROUTES.FDD }/flight`),
+            getScene: getScene,
+          }),
+          new SceneAppPage({
+            title: 'ADCS',
+            url: prefixRoute(`${ ROUTES.FDD }/adcs`),
+            getScene: getAdcsTabScene,
+          }),
+          new SceneAppPage({
+            title: 'GS',
+            url: prefixRoute(`${ ROUTES.FDD }/GS`),
+            getScene: getTab1Scene,
+          }),
+        ]
+        // drilldowns: [
+        // {
+        //   routePath: prefixRoute(`${ROUTES.WithDrilldown}`) + '/room/:roomName',
+        //   getPage(routeMatch, parent) {
+        //     const roomName = routeMatch.params.roomName;
 
-          //     return new SceneAppPage({
-          //       url: prefixRoute(`${ROUTES.WithDrilldown}`) + `/room/${roomName}/temperature`,
-          //       title: `${roomName} overview`,
-          //       subTitle: 'This scene is a particular room drilldown. It implements two tabs to organise the data.',
-          //       getParentPage: () => parent,
-          //       getScene: () => {
-          //         return new EmbeddedScene({ body: new SceneFlexLayout({ children: [] }) });
-          //       },
-          //       tabs: [
-          //         new SceneAppPage({
-          //           title: 'Temperature',
-          //           url: prefixRoute(`${ROUTES.WithDrilldown}`) + `/room/${roomName}/temperature`,
-          //           getScene: () => getTemperatureOverviewScene(roomName),
-          //         }),
-          //         new SceneAppPage({
-          //           title: 'Humidity',
-          //           url: prefixRoute(`${ROUTES.WithDrilldown}`) + `/room/${roomName}/humidity`,
-          //           getScene: () => getHumidityOverviewScene(roomName),
-          //         }),
-          //       ],
-          //     });
-          //   },
-          // },
-        ],
+        //     return new SceneAppPage({
+        //       url: prefixRoute(`${ROUTES.WithDrilldown}`) + `/room/${roomName}/temperature`,
+        //       title: `${roomName} overview`,
+        //       subTitle: 'This scene is a particular room drilldown. It implements two tabs to organise the data.',
+        //       getParentPage: () => parent,
+        //       getScene: () => {
+        //         return new EmbeddedScene({ body: new SceneFlexLayout({ children: [] }) });
+        //       },
+        //       tabs: [
+        //         new SceneAppPage({
+        //           title: 'Temperature',
+        //           url: prefixRoute(`${ROUTES.WithDrilldown}`) + `/room/${roomName}/temperature`,
+        //           getScene: () => getTemperatureOverviewScene(roomName),
+        //         }),
+        //         new SceneAppPage({
+        //           title: 'Humidity',
+        //           url: prefixRoute(`${ROUTES.WithDrilldown}`) + `/room/${roomName}/humidity`,
+        //           getScene: () => getHumidityOverviewScene(roomName),
+        //         }),
+        //       ],
+        //     });
+        //   },
+        // },
+        // ],
       }),
     ],
   });
