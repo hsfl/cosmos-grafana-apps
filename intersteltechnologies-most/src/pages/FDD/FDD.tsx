@@ -317,7 +317,7 @@ const getScene = () =>
           isDraggable: draggable,
           body: new VizPanel({
             // title: '',
-            title: '${nodeToShow.query.key}',
+            // title: '${nodeToShow.query.key}',
             pluginId: 'interstel-most-plulgin', // from panel.json 'name' value
             // TODO note typo in plugin ID name
             options: {
