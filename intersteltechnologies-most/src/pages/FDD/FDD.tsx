@@ -1,7 +1,7 @@
-import React, {useMemo} from 'react';
+import React, { useMemo } from 'react';
 // import { getScene } from './fddScene';
-import {prefixRoute} from '../../utils/utils.routing';
-import {DATASOURCE_REF, ROUTES} from '../../constants';
+import { prefixRoute } from '../../utils/utils.routing';
+import { DATASOURCE_REF, ROUTES } from '../../constants';
 // DASH_DATASOURCE_REF
 import {
   EmbeddedScene,
@@ -9,7 +9,7 @@ import {
   SceneAppPage,
   // SceneFlexItem,
   // SceneFlexLayout,
-  SceneVariableSet,
+  // SceneVariableSet,
   SceneQueryRunner,
   SceneTimePicker,
   SceneTimeRange,
@@ -18,12 +18,12 @@ import {
   VizPanel,
   SceneControlsSpacer,
   SceneRefreshPicker,
-  CustomVariable,
+  // CustomVariable,
   VariableValueSelectors
 } from '@grafana/scenes';
-import {getGSScene} from '../Subsystems/GS/scenes';
-import {getADCSScene} from '../Subsystems/ADCS/adcsScene';
-import {NodeSceneObject} from './NodeSceneObject';
+import { getGSScene } from '../Subsystems/GS/scenes';
+import { getADCSScene } from '../Subsystems/ADCS/adcsScene';
+import { NodeSceneObject } from './NodeSceneObject';
 // import {SimplePanel} from '../../../../../cosmos-grafana-plugins/src/cosmos-timeline';
 
 // const scene = () => getScene();
@@ -35,13 +35,13 @@ const draggable = true;
 const resizeable = true;
 
 // Variable definition, using Grafana built-in TestData datasource
-const customVariable = new CustomVariable({
-  name: 'nodeToShow',
-  label: 'Node to show',
-  value: 'mother',
-  query: 'Mother Node : mother, Child 01 : child_01',
-  // query: 'Mother Node : mother, Child 01 : child_01',
-});
+// const customVariable = new CustomVariable({
+//   name: 'nodeToShow',
+//   label: 'Node to show',
+//   value: 'mother',
+//   query: 'Mother Node : mother, Child 01 : child_01',
+//   // query: 'Mother Node : mother, Child 01 : child_01',
+// });
 
 let timeRange = new SceneTimeRange({
   from: "2023-06-12T00:00:00.000Z",
@@ -282,7 +282,7 @@ const getScene = () =>
     //   // to: 'now',
     // }),
     $timeRange: timeRange,
-    $variables: new SceneVariableSet({variables: true ? [customVariable] : []}),
+    // $variables: new SceneVariableSet({ variables: true ? [customVariable] : [] }),
     $data: queryRunnerADCS,
     // $data: new SceneQueryRunner({
     //   datasource: DASH_DATASOURCE_REF,
@@ -821,7 +821,7 @@ const getScene = () =>
       new VariableValueSelectors({}),
       new SceneControlsSpacer(),
       customObject,
-      new SceneTimePicker({isOnCanvas: true}),
+      new SceneTimePicker({ isOnCanvas: true }),
       new SceneRefreshPicker({})
     ],
   });

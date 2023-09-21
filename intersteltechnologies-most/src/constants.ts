@@ -1,13 +1,14 @@
 import pluginJson from './plugin.json';
 
-export const PLUGIN_BASE_URL = `/a/${pluginJson.id}`;
+export const PLUGIN_BASE_URL = `/a/${ pluginJson.id }`;
 
 export enum ROUTES {
-  Home = 'home',
-  WithTabs = 'page-with-tabs',
-  WithDrilldown = 'page-with-drilldown',
-  HelloWorld = 'hello-world',
-  FDD = 'flight-directors-display',
+  // Home = 'home',
+  // WithTabs = 'page-with-tabs',
+  // WithDrilldown = 'page-with-drilldown',
+  // HelloWorld = 'hello-world',
+  // FDD = 'flight-directors-display',
+  FDD = 'home',
   FlightDynamics = 'flight-dynamics',
   GS = 'gs',
   FSW = 'fsw',
