@@ -76,6 +76,24 @@ export function getADCSScene() {
     };
   }
 
+  function getPositionAttTotQuery(Node: string) {
+    return {
+      arg: 'att_total',
+      refId: 'A',
+      datasource: DATASOURCE_REF,
+      filters: [
+        {
+          compareType: 'equals',
+          filterType: 'node',
+          filterValue: Node
+        }
+      ],
+      functions: [],
+      latestOnly: false,
+      type: 'position',
+    };
+  }
+
   function getSsenQuery(Node: string) {
     return {
       arg: '',
@@ -135,6 +153,13 @@ export function getADCSScene() {
     datasource: DATASOURCE_REF,
     queries: [
       getPositionICRFQuery(NODE), getPositionGEOCQuery(NODE), getPositionLVLHQuery(NODE),
+    ],
+    maxDataPoints: row_return,
+  });
+  const queryRunnerEstState = new SceneQueryRunner({
+    datasource: DATASOURCE_REF,
+    queries: [
+      getPositionAttTotQuery(NODE),
     ],
     maxDataPoints: row_return,
   });
@@ -206,6 +231,19 @@ export function getADCSScene() {
       sub.unsubscribe();
     };
   });
+  queryRunnerEstState.addActivationHandler(() => {
+    const sub = customObject.subscribeToState((newState) => {
+      queryRunnerEstState.setState({
+        queries: [
+          getPositionAttTotQuery(newState.node),
+        ],
+      });
+      queryRunnerEstState.runQueries();
+    });
+    return () => {
+      sub.unsubscribe();
+    };
+  });
   queryRunnerIMU.addActivationHandler(() => {
     const sub = customObject.subscribeToState((newState) => {
       queryRunnerIMU.setState({
@@ -259,10 +297,10 @@ export function getADCSScene() {
       isLazy: false,
       children: [
         new SceneGridItem({
+          height: 17,
+          width: 8,
           x: 12,
           y: 0,
-          width: 9,
-          height: 17,
           $data: queryRunnerADCS,
           isResizable: true,
           isDraggable: true,
@@ -286,6 +324,21 @@ export function getADCSScene() {
             options: {
               seriesCountSize: "sm",
               showSeriesCount: false,
+            },
+          }),
+        }),
+        new SceneGridItem({
+          height: 10,
+          width: 4,
+          x: 20,
+          y: 0,
+          $data: queryRunnerEstState,
+          isResizable: true,
+          isDraggable: true,
+          body: new VizPanel({
+            title: 'Estimated States',
+            pluginId: 'interstel-adcssubsystem-panel',
+            options: {
             },
           }),
         }),

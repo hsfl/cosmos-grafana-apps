@@ -316,19 +316,11 @@ const getScene = () =>
           isResizable: resizeable,
           isDraggable: draggable,
           body: new VizPanel({
-            // title: '',
+            title: '',
             // title: '${nodeToShow.query.key}',
             pluginId: 'interstel-most-plulgin', // from panel.json 'name' value
             // TODO note typo in plugin ID name
             options: {
-              // color: "red",
-              // seriesCountSize: "sm",
-              // showSeriesCount: false,
-              // legend: {
-              //   showLegend: false,
-              // }
-              // text: "Default value of text input option"
-              // content: 'Hello world! ',
             },
           }),
         }),
@@ -354,14 +346,6 @@ const getScene = () =>
             pluginId: 'interstel-cw-panel', // from panel.json 'name' value
             options: {
               title: 'hidden'
-              // color: "red",
-              // seriesCountSize: "sm",
-              // showSeriesCount: false,
-              // legend: {
-              //   showLegend: false,
-              // }
-              // text: "Default value of text input option"
-              // content: 'Hello world! ',
             },
           }),
         }),
@@ -386,14 +370,6 @@ const getScene = () =>
               seriesCountSize: "sm",
               showSeriesCount: false,
               text: "Default value of text input option",
-              // color: "red",
-              // seriesCountSize: "sm",
-              // showSeriesCount: false,
-              // legend: {
-              //   showLegend: false,
-              // }
-              // text: "Default value of text input option"
-              // content: 'Hello world! ',
             },
           }),
         }),
@@ -417,14 +393,7 @@ const getScene = () =>
             options: {
               showAnimation: false,
               showTimeline: false
-              // color: "red",
-              // seriesCountSize: "sm",
-              // showSeriesCount: false,
-              // legend: {
-              //   showLegend: false,
-              // }
-              // text: "Default value of text input option"
-              // content: 'Hello world! ',
+
             },
           }),
         }),
@@ -446,14 +415,6 @@ const getScene = () =>
             pluginId: 'interstel-adcs-display', // from panel.json 'name' value
             options: {
               customVariable: 'subsystem',
-              // color: "red",
-              // seriesCountSize: "sm",
-              // showSeriesCount: false,
-              // legend: {
-              //   showLegend: false,
-              // }
-              // text: "Default value of text input option"
-              // content: 'Hello world! ',
             },
           }),
         }),
@@ -474,14 +435,6 @@ const getScene = () =>
             title: 'EPS',
             pluginId: 'interstel-battery-display', // from panel.json 'name' value
             options: {
-              // color: "red",
-              // seriesCountSize: "sm",
-              // showSeriesCount: false,
-              // legend: {
-              //   showLegend: false,
-              // }
-              // text: "Default value of text input option"
-              // content: 'Hello world! ',
             },
           }),
         }),
@@ -502,14 +455,6 @@ const getScene = () =>
             title: 'OBCS',
             pluginId: 'interstel-obcs-panel', // from panel.json 'name' value
             options: {
-              // color: "red",
-              // seriesCountSize: "sm",
-              // showSeriesCount: false,
-              // legend: {
-              //   showLegend: false,
-              // }
-              // text: "Default value of text input option"
-              // content: 'Hello world! ',
             },
           }),
         }),
@@ -530,14 +475,6 @@ const getScene = () =>
             title: 'TCS',
             pluginId: 'interstel-temperature-sensor-display', // from panel.json 'name' value
             options: {
-              // color: "red",
-              // seriesCountSize: "sm",
-              // showSeriesCount: false,
-              // legend: {
-              //   showLegend: false,
-              // }
-              // text: "Default value of text input option"
-              // content: 'Hello world! ',
             },
           }),
         }),
@@ -557,14 +494,6 @@ const getScene = () =>
             title: 'Comm',
             pluginId: 'interstel-antenna-panel', // from panel.json 'name' value
             options: {
-              // color: "red",
-              // seriesCountSize: "sm",
-              // showSeriesCount: false,
-              // legend: {
-              //   showLegend: false,
-              // }
-              // text: "Default value of text input option"
-              // content: 'Hello world! ',
             },
           }),
         }),
@@ -592,14 +521,6 @@ const getScene = () =>
             options: {
               seriesCountSize: "sm",
               showSeriesCount: false,
-              // color: "red",
-              // seriesCountSize: "sm",
-              // showSeriesCount: false,
-              // legend: {
-              //   showLegend: false,
-              // }
-              // text: "Default value of text input option"
-              // content: 'Hello world! ',
             },
           }),
         }),
@@ -619,14 +540,6 @@ const getScene = () =>
             title: '',
             pluginId: 'interstel-command-panel', // from panel.json 'name' value
             options: {
-              // color: "red",
-              // seriesCountSize: "sm",
-              // showSeriesCount: false,
-              // legend: {
-              //   showLegend: false,
-              // }
-              // text: "Default value of text input option"
-              // content: 'Hello world! ',
             },
           }),
         }),
@@ -675,14 +588,6 @@ const getScene = () =>
               thresholdsStyle: {
                 mode: 'off'
               }
-              // color: "red",
-              // seriesCountSize: "sm",
-              // showSeriesCount: false,
-              // legend: {
-              //   showLegend: false,
-              // }
-              // text: "Default value of text input option"
-              // content: 'Hello world! ',
             },
           }),
         }),
@@ -704,14 +609,6 @@ const getScene = () =>
             title: 'Nodal Situational Awareness',
             pluginId: 'hsfl-nodal-awareness', // from panel.json 'name' value
             options: {
-              // color: "red",
-              // seriesCountSize: "sm",
-              // showSeriesCount: false,
-              // legend: {
-              //   showLegend: false,
-              // }
-              // text: "Default value of text input option"
-              // content: 'Hello world! ',
             },
           }),
         }),
@@ -731,18 +628,9 @@ const getScene = () =>
             title: 'GS',
             pluginId: 'text', // from panel.json 'name' value
             options: {
-              // color: "red",
-              // seriesCountSize: "sm",
-              // showSeriesCount: false,
-              // legend: {
-              //   showLegend: false,
-              // }
-              // text: "Default value of text input option"
-              // content: 'Hello world! ',
             },
           }),
         }),
-        // dashboard type timeseries again? 
         new SceneGridItem({
           height: 4,
           width: 7,
@@ -788,35 +676,11 @@ const getScene = () =>
               thresholdsStyle: {
                 mode: 'off'
               }
-              // color: "red",
-              // seriesCountSize: "sm",
-              // showSeriesCount: false,
-              // legend: {
-              //   showLegend: false,
-              // }
-              // text: "Default value of text input option"
-              // content: 'Hello world! ',
             },
           }),
         }),
-        //
       ],
     }),
-    // body: new SceneFlexLayout({
-    //   children: [
-    //     new SceneFlexItem({
-    //       width: '100%',
-    //       height: 300,
-    //       body: new VizPanel({
-    //         title: 'FDD panel',
-    //         pluginId: 'text',
-    //         options: {
-    //           content: 'fddfdd! ',
-    //         },
-    //       }),
-    //     }),
-    //   ],
-    // }),
     controls: [
       new VariableValueSelectors({}),
       new SceneControlsSpacer(),
@@ -836,17 +700,12 @@ function getPositionICRFQuery(Node: string) {
       {
         compareType: 'equals',
         filterType: 'node',
-        filterValue: Node // need dynamic variable passed from node select
+        filterValue: Node
       }
     ],
     functions: [],
     latestOnly: false,
     type: 'position'
-    // scenarioId: 'random_walk',
-    // seriesCount: 1,
-    // alias: roomName,
-    // min: 10,
-    // max: 30,
   };
 }
 
@@ -859,17 +718,12 @@ function getPositionGEOCQuery(Node: string) {
       {
         compareType: 'equals',
         filterType: 'node',
-        filterValue: Node // need dynamic variable passed from node select
+        filterValue: Node
       }
     ],
     functions: [],
     latestOnly: false,
     type: 'position'
-    // scenarioId: 'random_walk',
-    // seriesCount: 1,
-    // alias: roomName,
-    // min: 10,
-    // max: 30,
   };
 }
 
@@ -882,18 +736,12 @@ function getPositionLVLHQuery(Node: string) {
       {
         compareType: 'equals',
         filterType: 'node',
-        filterValue: Node // need dynamic variable passed from node select
+        filterValue: Node
       }
     ],
     functions: [],
     latestOnly: false,
     type: 'position',
-    // alias: '${nodeToShow}',
-    // scenarioId: 'random_walk',
-    // seriesCount: 1,
-    // alias: roomName,
-    // min: 10,
-    // max: 30,
   };
 }
 
@@ -906,17 +754,12 @@ function getPositionOrbitQuery(Node: string) {
       {
         compareType: 'equals',
         filterType: 'node',
-        filterValue: Node // need dynamic variable passed from node select
+        filterValue: Node
       }
     ],
     functions: [],
     latestOnly: false,
     type: 'position'
-    // scenarioId: 'random_walk',
-    // seriesCount: 1,
-    // alias: roomName,
-    // min: 10,
-    // max: 30,
   };
 }
 
@@ -929,17 +772,12 @@ function getEventQuery(Node: string) {
       {
         compareType: 'equals',
         filterType: 'node',
-        filterValue: Node // need dynamic variable passed from node select
+        filterValue: Node
       }
     ],
     functions: [],
     latestOnly: false,
     type: 'event'
-    // scenarioId: 'random_walk',
-    // seriesCount: 1,
-    // alias: roomName,
-    // min: 10,
-    // max: 30,
   };
 }
 
@@ -952,17 +790,12 @@ function getBatteryQuery(Node: string) {
       {
         compareType: 'equals',
         filterType: 'node',
-        filterValue: Node // need dynamic variable passed from node select
+        filterValue: Node
       }
     ],
     functions: [],
     latestOnly: false,
     type: 'battery'
-    // scenarioId: 'random_walk',
-    // seriesCount: 1,
-    // alias: roomName,
-    // min: 10,
-    // max: 30,
   };
 }
 
@@ -975,17 +808,12 @@ function getBCregQuery(Node: string) {
       {
         compareType: 'equals',
         filterType: 'node',
-        filterValue: Node // need dynamic variable passed from node select
+        filterValue: Node
       }
     ],
     functions: [],
     latestOnly: false,
     type: 'bcreg'
-    // scenarioId: 'random_walk',
-    // seriesCount: 1,
-    // alias: roomName,
-    // min: 10,
-    // max: 30,
   };
 }
 
@@ -998,17 +826,12 @@ function getCPUQuery(Node: string) {
       {
         compareType: 'equals',
         filterType: 'node',
-        filterValue: Node // need dynamic variable passed from node select
+        filterValue: Node
       }
     ],
     functions: [],
     latestOnly: false,
     type: 'cpu'
-    // scenarioId: 'random_walk',
-    // seriesCount: 1,
-    // alias: roomName,
-    // min: 10,
-    // max: 30,
   };
 }
 
@@ -1021,17 +844,12 @@ function getTSENQuery(Node: string) {
       {
         compareType: 'equals',
         filterType: 'node',
-        filterValue: Node // need dynamic variable passed from node select
+        filterValue: Node
       }
     ],
     functions: [],
     latestOnly: false,
     type: 'tsen'
-    // scenarioId: 'random_walk',
-    // seriesCount: 1,
-    // alias: roomName,
-    // min: 10,
-    // max: 30,
   };
 }
 
@@ -1044,17 +862,12 @@ function getNodeAwareQuery(Node: string) {
       {
         compareType: 'equals',
         filterType: 'node',
-        filterValue: Node // need dynamic variable passed from node select
+        filterValue: Node
       }
     ],
     functions: [],
     latestOnly: false,
     type: 'nodalaware'
-    // scenarioId: 'random_walk',
-    // seriesCount: 1,
-    // alias: roomName,
-    // min: 10,
-    // max: 30,
   };
 }
 
