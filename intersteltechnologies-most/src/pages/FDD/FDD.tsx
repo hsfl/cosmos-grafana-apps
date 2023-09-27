@@ -21,7 +21,7 @@ import {
   // CustomVariable,
   VariableValueSelectors
 } from '@grafana/scenes';
-import { getGSScene } from '../Subsystems/GS/scenes';
+// import { getGSScene } from '../Subsystems/GS/scenes';
 import { getADCSScene } from '../Subsystems/ADCS/adcsScene';
 import { NodeSceneObject } from './NodeSceneObject';
 // import {SimplePanel} from '../../../../../cosmos-grafana-plugins/src/cosmos-timeline';
@@ -261,9 +261,9 @@ queryRunnerNodalAware.addActivationHandler(() => {
 });
 
 // reference GS subsystem app scene page
-const getTab1Scene = () => {
-  return getGSScene(false, customObject.state.node);
-};
+// const getTab1Scene = () => {
+//   return getGSScene(false, customObject.state.node);
+// };
 
 // getADCSScene
 // reference ADCS subsystem app scene page
@@ -628,6 +628,8 @@ const getScene = () =>
             title: 'GS',
             pluginId: 'text', // from panel.json 'name' value
             options: {
+              text: "",
+              content: '',
             },
           }),
         }),
@@ -901,33 +903,33 @@ const getFDDAppScenePage = () => {
       new SceneAppPage({
         // $timeRange: new SceneTimeRange({ from: 'now-6h', to: 'now' }),
         title: "Flight Director's Display",
-        subTitle: 'This scene showcases the basic MOST functionality. Interact with CW panel to see details.',
+        subTitle: 'MOST provides detailed command and control of a single iCOSMOS node.',
         // controls: [new SceneTimePicker({ isOnCanvas: false })],
-        url: prefixRoute(`${ ROUTES.FDD }`),
+        url: prefixRoute(`${ROUTES.FDD}`),
         hideFromBreadcrumbs: true,
         // scene,
         getScene,
         tabs: [
           new SceneAppPage({
             title: 'FDD',
-            url: prefixRoute(`${ ROUTES.FDD }`),
+            url: prefixRoute(`${ROUTES.FDD}`),
             getScene: getScene,
           }),
-          new SceneAppPage({
-            title: 'Flight Dynamics',
-            url: prefixRoute(`${ ROUTES.FDD }/flight`),
-            getScene: getScene,
-          }),
+          // new SceneAppPage({
+          //   title: 'Flight Dynamics',
+          //   url: prefixRoute(`${ ROUTES.FDD }/flight`),
+          //   getScene: getScene,
+          // }),
           new SceneAppPage({
             title: 'ADCS',
-            url: prefixRoute(`${ ROUTES.FDD }/adcs`),
+            url: prefixRoute(`${ROUTES.FDD}/adcs`),
             getScene: getAdcsTabScene,
           }),
-          new SceneAppPage({
-            title: 'GS',
-            url: prefixRoute(`${ ROUTES.FDD }/GS`),
-            getScene: getTab1Scene,
-          }),
+          // new SceneAppPage({
+          //   title: 'GS',
+          //   url: prefixRoute(`${ ROUTES.FDD }/GS`),
+          //   getScene: getTab1Scene,
+          // }),
         ]
         // drilldowns: [
         // {
