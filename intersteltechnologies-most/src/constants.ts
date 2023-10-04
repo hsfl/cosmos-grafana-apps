@@ -24,7 +24,7 @@ export enum ROUTES {
 export const DATASOURCE_REF = {
   // uid: 'iSTWfX0Vk',
   // type: 'testdata',
-  uid: 'RRqoBbE4k',
+//   uid: 'RRqoBbE4k',
   type: 'hsfl-cosmos-datasource',
 };
 
