@@ -7,7 +7,9 @@ import {
   SceneTimeRange,
   SceneControlsSpacer,
   SceneTimePicker,
-  SceneRefreshPicker
+  SceneRefreshPicker,
+  ConstantVariable,
+  SceneVariableSet
 } from '@grafana/scenes';
 import { DATASOURCE_REF } from '../../../constants';
 import { NodeSceneObject } from '../../FDD/NodeSceneObject';
@@ -16,6 +18,10 @@ export function getADCSScene() {
 
   const NODE = 'mother'; //'${nodeToShow}';
   const row_return = 1000;
+
+  const showADCS = new ConstantVariable({
+    value: "false",
+  });
 
   // Custom object definition
   const customObject = new NodeSceneObject({
@@ -292,12 +298,15 @@ export function getADCSScene() {
       // to: 'now',
     }),
     $data: queryRunnerADCS,
+    $variables: new SceneVariableSet({
+      variables: [showADCS],
+    }),
     body: new SceneGridLayout({
       isDraggable: false,
       isLazy: false,
       children: [
         new SceneGridItem({
-          height: 17,
+          height: 11,
           width: 8,
           x: 12,
           y: 0,
@@ -308,6 +317,7 @@ export function getADCSScene() {
             title: 'ADCS',
             pluginId: 'interstel-adcs-display', // from panel.json 'name' value
             options: {
+              showSeriesCount: false,
             },
           }),
         }),
@@ -339,6 +349,7 @@ export function getADCSScene() {
             title: 'Estimated States',
             pluginId: 'interstel-adcssubsystem-panel',
             options: {
+              showSeriesCount: false,
             },
           }),
         }),

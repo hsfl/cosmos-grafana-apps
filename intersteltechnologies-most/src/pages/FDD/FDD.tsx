@@ -415,6 +415,7 @@ const getScene = () =>
             pluginId: 'interstel-adcs-display', // from panel.json 'name' value
             options: {
               customVariable: 'subsystem',
+              showSeriesCount: true,
             },
           }),
         }),
