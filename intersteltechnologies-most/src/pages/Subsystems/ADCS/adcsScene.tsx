@@ -154,11 +154,49 @@ export function getADCSScene() {
     };
   }
 
+  function getMtrQuery(Node: string) {
+    return {
+      arg: '',
+      refId: 'A',
+      datasource: DATASOURCE_REF,
+      filters: [
+        {
+          compareType: 'equals',
+          filterType: 'node',
+          filterValue: Node
+        }
+      ],
+      functions: [],
+      latestOnly: false,
+      type: 'mtr',
+    };
+  }
+
+  function getRwQuery(Node: string) {
+    return {
+      arg: '',
+      refId: 'B',
+      datasource: DATASOURCE_REF,
+      filters: [
+        {
+          compareType: 'equals',
+          filterType: 'node',
+          filterValue: Node
+        }
+      ],
+      functions: [],
+      latestOnly: false,
+      type: 'rw',
+    };
+  }
+
   // Query runner definition
   const queryRunnerADCS = new SceneQueryRunner({
     datasource: DATASOURCE_REF,
     queries: [
-      getPositionICRFQuery(NODE), getPositionGEOCQuery(NODE), getPositionLVLHQuery(NODE),
+      getPositionICRFQuery(NODE),
+      getPositionGEOCQuery(NODE),
+      getPositionLVLHQuery(NODE),
     ],
     maxDataPoints: row_return,
   });
@@ -187,6 +225,14 @@ export function getADCSScene() {
     datasource: DATASOURCE_REF,
     queries: [
       getGpsQuery(NODE)
+    ],
+    maxDataPoints: row_return,
+  });
+  const queryRunnerControl = new SceneQueryRunner({
+    datasource: DATASOURCE_REF,
+    queries: [
+      getMtrQuery(NODE),
+      getRwQuery(NODE)
     ],
     maxDataPoints: row_return,
   });
@@ -289,6 +335,20 @@ export function getADCSScene() {
       sub.unsubscribe();
     };
   });
+  queryRunnerControl.addActivationHandler(() => {
+    const sub = customObject.subscribeToState((newState) => {
+      queryRunnerControl.setState({
+        queries: [
+          getMtrQuery(newState.node),
+          getRwQuery(newState.node),
+        ],
+      });
+      queryRunnerControl.runQueries();
+    });
+    return () => {
+      sub.unsubscribe();
+    };
+  });
 
   return new EmbeddedScene({
     $timeRange: new SceneTimeRange({
@@ -306,7 +366,7 @@ export function getADCSScene() {
       isLazy: false,
       children: [
         new SceneGridItem({
-          height: 11,
+          height: 10,
           width: 8,
           x: 12,
           y: 0,
@@ -438,6 +498,21 @@ export function getADCSScene() {
           isDraggable: true,
           body: new VizPanel({
             title: 'GPS 2',
+            pluginId: 'interstel-adcssubsystem-panel',
+            options: {
+            },
+          }),
+        }),
+        new SceneGridItem({
+          height: 5,
+          width: 6,
+          x: 12,
+          y: 10,
+          $data: queryRunnerControl,
+          isResizable: true,
+          isDraggable: true,
+          body: new VizPanel({
+            title: 'Control',
             pluginId: 'interstel-adcssubsystem-panel',
             options: {
             },
