@@ -241,6 +241,38 @@ export function getADCSScene() {
   // able to iterate over panel items dynamically, needs to have results of query prior to rendering
   // as the scene query may happen after the scene and panels are rendered
 
+  //  query._state.data.series[0].fields. ... filter didx ... that's the array of devices
+  // let controls = queryRunnerControl.state;
+  // .filter((query) => query.meta?.custom?.type === 'mtr');
+  // console.log('apps controls query', controls);
+  // let mtr = controls.queries[0];
+  // console.log("apps query mtr", mtr);
+  // let rw = controls.queries[0];
+  // const mtr_array = mtr
+
+  // need to apply list comp : ...[for (q of query) if (!undefined) new_type_scene(q)]
+  // where query is = query._state.data.series ... or sub-series depending on panel
+  // function new_imu_scene(position: number, data: SceneQueryRunner) {
+  //   let scene = new SceneGridItem({
+  //     height: 4,
+  //     width: 6,
+  //     x: 0,
+  //     y: 2,
+  //     $data: data,
+  //     isResizable: true,
+  //     isDraggable: true,
+  //     body: new VizPanel({
+  //       title: `IMU ${position}`,
+  //       pluginId: 'interstel-adcssubsystem-panel',
+  //       options: {
+  //       },
+  //     }),
+  //   })
+  //   return scene
+  // };
+  // [for (q of queryRunnerIMU.state.data?) new_imu_scene(q, queryRunnerIMU)]
+  // [new_imu_scene(3, queryRunnerIMU)]
+
   // const array = ['one', 'two', 'three'];
   // let child: SceneGridItem[] = [];
   // array.forEach((arr) => {
@@ -366,7 +398,7 @@ export function getADCSScene() {
       isLazy: false,
       children: [
         new SceneGridItem({
-          height: 10,
+          height: 14,
           width: 8,
           x: 12,
           y: 0,
@@ -414,7 +446,7 @@ export function getADCSScene() {
           }),
         }),
         new SceneGridItem({
-          height: 4,
+          height: 6,
           width: 6,
           x: 0,
           y: 2,
@@ -422,92 +454,92 @@ export function getADCSScene() {
           isResizable: true,
           isDraggable: true,
           body: new VizPanel({
-            title: 'IMU 1',
+            title: 'IMU',
             pluginId: 'interstel-adcssubsystem-panel',
             options: {
             },
           }),
         }),
+        // new SceneGridItem({
+        //   height: 4,
+        //   width: 6,
+        //   x: 6,
+        //   y: 2,
+        //   $data: queryRunnerIMU,
+        //   isResizable: true,
+        //   isDraggable: true,
+        //   body: new VizPanel({
+        //     title: 'IMU 2',
+        //     pluginId: 'interstel-adcssubsystem-panel',
+        //     options: {
+        //     },
+        //   }),
+        // }),
         new SceneGridItem({
-          height: 4,
+          height: 6,
           width: 6,
           x: 6,
           y: 2,
-          $data: queryRunnerIMU,
-          isResizable: true,
-          isDraggable: true,
-          body: new VizPanel({
-            title: 'IMU 2',
-            pluginId: 'interstel-adcssubsystem-panel',
-            options: {
-            },
-          }),
-        }),
-        new SceneGridItem({
-          height: 5,
-          width: 6,
-          x: 0,
-          y: 6,
           $data: queryRunnerSSEN,
           isResizable: true,
           isDraggable: true,
           body: new VizPanel({
-            title: 'SSEN 1',
+            title: 'SSEN',
             pluginId: 'interstel-adcssubsystem-panel',
             options: {
             },
           }),
         }),
+        // new SceneGridItem({
+        //   height: 5,
+        //   width: 6,
+        //   x: 6,
+        //   y: 6,
+        //   $data: queryRunnerSSEN,
+        //   isResizable: true,
+        //   isDraggable: true,
+        //   body: new VizPanel({
+        //     title: 'SSEN 2',
+        //     pluginId: 'interstel-adcssubsystem-panel',
+        //     options: {
+        //     },
+        //   }),
+        // }),
         new SceneGridItem({
-          height: 5,
-          width: 6,
-          x: 6,
-          y: 6,
-          $data: queryRunnerSSEN,
-          isResizable: true,
-          isDraggable: true,
-          body: new VizPanel({
-            title: 'SSEN 2',
-            pluginId: 'interstel-adcssubsystem-panel',
-            options: {
-            },
-          }),
-        }),
-        new SceneGridItem({
-          height: 4,
+          height: 6,
           width: 6,
           x: 0,
-          y: 11,
+          y: 8,
           $data: queryRunnerGPS,
           isResizable: true,
           isDraggable: true,
           body: new VizPanel({
-            title: 'GPS 1',
+            title: 'GPS',
             pluginId: 'interstel-adcssubsystem-panel',
             options: {
             },
           }),
         }),
+        // new SceneGridItem({
+        //   height: 4,
+        //   width: 6,
+        //   x: 6,
+        //   y: 11,
+        //   $data: queryRunnerGPS,
+        //   isResizable: true,
+        //   isDraggable: true,
+        //   body: new VizPanel({
+        //     title: 'GPS 2',
+        //     pluginId: 'interstel-adcssubsystem-panel',
+        //     options: {
+        //     },
+        //   }),
+        // }),
         new SceneGridItem({
-          height: 4,
+          height: 6,
           width: 6,
           x: 6,
-          y: 11,
-          $data: queryRunnerGPS,
-          isResizable: true,
-          isDraggable: true,
-          body: new VizPanel({
-            title: 'GPS 2',
-            pluginId: 'interstel-adcssubsystem-panel',
-            options: {
-            },
-          }),
-        }),
-        new SceneGridItem({
-          height: 5,
-          width: 6,
-          x: 12,
-          y: 10,
+          y: 8,
           $data: queryRunnerControl,
           isResizable: true,
           isDraggable: true,
@@ -518,6 +550,7 @@ export function getADCSScene() {
             },
           }),
         }),
+        // ...[new_imu_scene(3, queryRunnerIMU)],
         // add elements dynamically from array
         // ...child
         //
