@@ -23,6 +23,7 @@ import {
 } from '@grafana/scenes';
 // import { getGSScene } from '../Subsystems/GS/scenes';
 import { getADCSScene } from '../Subsystems/ADCS/adcsScene';
+import { getTCSScene } from '../Subsystems/TCS/tcsScene';
 import { NodeSceneObject } from './NodeSceneObject';
 // import {SimplePanel} from '../../../../../cosmos-grafana-plugins/src/cosmos-timeline';
 
@@ -269,6 +270,10 @@ queryRunnerNodalAware.addActivationHandler(() => {
 // reference ADCS subsystem app scene page
 const getAdcsTabScene = () => {
   return getADCSScene();
+};
+
+const getTcsTabScene = () => {
+  return getTCSScene();
 };
 // const timelineObject = new SimplePanel({
 // });
@@ -925,6 +930,11 @@ const getFDDAppScenePage = () => {
             title: 'ADCS',
             url: prefixRoute(`${ROUTES.FDD}/adcs`),
             getScene: getAdcsTabScene,
+          }),
+          new SceneAppPage({
+            title: 'TCS',
+            url: prefixRoute(`${ROUTES.FDD}/tcs`),
+            getScene: getTcsTabScene,
           }),
           // new SceneAppPage({
           //   title: 'GS',
